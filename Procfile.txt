@@ -1,1 +1,1 @@
-worker: python temperatureOpsRnd.py
+worker: python script.py
