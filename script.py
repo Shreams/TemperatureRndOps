@@ -58,33 +58,32 @@ if group_url.startswith('https://' + group_string) or group_url.startswith('http
 
             healthyTempAfternoon = [36.3,36.4,36.5,36.6,36.7,36.8]
 
-            meridies = ['AM', 'PM']
-            
-            # Send AM & PM Temperature when available
-            for meridy in meridies:
 
-                for fourD, fourDInfo in section2Dict.items():
+            for fourD, fourDInfo in section2Dict.items():
+
+                section2ID = fourD
+                
+                # Random Temperature Generator
+                if datetime.now(pytz.timezone('Asia/Kuala_Lumpur')).hour < 12 :
+                    meridy = 'AM'
+                    temperature = healthyTempMorning[random.randint(0,5)]
+
+                else :
+                    meridy = 'PM'
+                    temperature = healthyTempAfternoon[random.randint(0,5)]
                     
-                    # Random Temperature Generator
-                    if meridy == 'AM':
-                        temperature = healthyTempMorning[random.randint(0,5)]
 
-                    if meridy == 'PM':
-                        temperature = healthyTempAfternoon[random.randint(0,5)]
-
-                    section2ID = fourD
-
-                    payload = {
-                        'groupCode': parsed_url["groupCode"],
-                        'date': datetime.now(pytz.timezone('Asia/Kuala_Lumpur')).strftime('%d/%m/%Y'),
-                        'meridies': meridy,
-                        'memberId': fourDInfo["id"],
-                        'temperature': temperature,
-                        'pin': fourDInfo["pin"]
-                    }
-                    
-                    r = requests.post(url, data=payload)
-                    print(fourD, " submitted their", meridy, "temperature")
+                payload = {
+                    'groupCode': parsed_url["groupCode"],
+                    'date': datetime.now(pytz.timezone('Asia/Kuala_Lumpur')).strftime('%d/%m/%Y'),
+                    'meridies': meridy,
+                    'memberId': fourDInfo["id"],
+                    'temperature': temperature,
+                    'pin': fourDInfo["pin"]
+                }
+                
+                r = requests.post(url, data=payload)
+                print(fourD, " submitted their", meridy, "temperature")
 
         except Exception as e:
             print(section2ID, " failed to submit their temperature")
