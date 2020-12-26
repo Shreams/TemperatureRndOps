@@ -9,26 +9,11 @@ import pytz
 import json
 import random
 
-section2Dict = {
-    "2201" : {"id" : "8315", "pin" : "1904"},
-    "2202" : {"id" : "1684907", "pin" : "0707"},
-    "2203" : {"id" : "1684913", "pin" : "0807"},
-    "2204" : {"id" : "8324", "pin" : "5895"},
-    "2205" : {"id" : "8327", "pin" : "1299"},
-    "2206" : {"id" : "8328", "pin" : "2468"},
-    "2207" : {"id" : "8331", "pin" : "7590"},
-    "2208" : {"id" : "8332", "pin" : "9781"},
-    "2209" : {"id" : "8345", "pin" : "0000"},
-    "2210" : {"id" : "8355", "pin" : "2210"},
-    "2211" : {"id" : "8357", "pin" : "2211"},
-    "2212" : {"id" : "1685427", "pin" : "1606"},
-    "2213" : {"id" : "8370", "pin" : "2213"},
-    "2214" : {"id" : "8372", "pin" : "6373"},
-    "2215" : {"id" : "8375", "pin" : "2215"},
-    "2216" : {"id" : "1684931", "pin" : "2216"},
+syndicate1Dict = {
+    "1123" : {"id" : "13922093", "pin" : "1123"},
 }
        
-group_url = "https://temptaking.ado.sg/group/2424241947e5a26be7a9c10d6720c84b"
+group_url = "https://temptaking.ado.sg/group/27cd67d30abdcee200f6aa62e9984f43"
     
 group_string = 'temptaking.ado.sg/group/'
 
@@ -49,7 +34,7 @@ if group_url.startswith('https://' + group_string) or group_url.startswith('http
     try:
         parsed_url = json.loads(urlParse(req_text))
 
-        section2ID = ""
+        syndicate1ID = ""
 
         try:
             url = "https://temptaking.ado.sg/group/MemberSubmitTemperature"
@@ -59,13 +44,14 @@ if group_url.startswith('https://' + group_string) or group_url.startswith('http
             healthyTempAfternoon = [36.3,36.4,36.5,36.6,36.7,36.8]
 
 
-            for fourD, fourDInfo in section2Dict.items():
+            for fourD, fourDInfo in syndicate1Dict.items():
 
-                section2ID = fourD
+                syndicate1ID = fourD
                 
                 # Random Temperature Generator
-                if datetime.now(pytz.timezone('Asia/Kuala_Lumpur')).hour < 12 :
-                    meridy = 'AM'
+                # Between 6pm to 12pm
+                if datetime.now(pytz.timezone('Asia/Kuala_Lumpur')).hour < 12 and datetime.now(pytz.timezone('Asia/Kuala_Lumpur')).hour > 6  :
+                    print('bye')
                     temperature = healthyTempMorning[random.randint(0,5)]
 
                 else :
@@ -86,9 +72,18 @@ if group_url.startswith('https://' + group_string) or group_url.startswith('http
                 print(fourD, " submitted their", meridy, "temperature")
 
         except Exception as e:
-            print(section2ID, " failed to submit their temperature")
+            print(syndicate1ID, " failed to submit their temperature")
 
     except:
         print("Invalid2")
         
-    
+
+# from flask import Flask
+# app = Flask(__name__)
+
+# @app.route("/")
+# def hello():
+#     return "Hello World!"
+
+# if __name__ == "__main__":
+#     app.run()
